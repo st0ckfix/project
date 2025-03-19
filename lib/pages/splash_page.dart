@@ -1,38 +1,209 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: unused_local_variable
 
-class SplashPage extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:project/pages/home_page.dart';
+
+class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final welcomeWidget = Column(
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+  late Widget _widget;
+  late String _header;
+
+  Widget _buildWelcomeWidget() {
+    _header = 'Welcome';
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            minimumSize: Size(290, 63),
-            shadowColor: Colors.transparent,
-            backgroundColor: Colors.transparent,
-            foregroundColor: Color(0xFF1042BF),
-            shape: StadiumBorder(
-              side: BorderSide(
-                color: Color(0xFF1042BF),
-                width: 3,
+        Hero(
+          tag: 'signup',
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(290, 63),
+              shadowColor: Colors.transparent,
+              backgroundColor: Colors.transparent,
+              foregroundColor: Color(0xFF1042BF),
+              shape: StadiumBorder(
+                side: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 3,
+                ),
               ),
             ),
-          ),
-          onPressed: () {},
-          child: Text(
-            'Sign Up',
-            style: TextStyle(
-              fontSize: 22,
-              fontFamily: 'Bai Jamjuree',
-              fontWeight: FontWeight.w700,
+            onPressed: () => setState(() {
+              _widget = _buildSignupWidget();
+            }),
+            child: Text(
+              'Sign Up',
+              style: TextStyle(
+                fontSize: 22,
+                fontFamily: 'Bai Jamjuree',
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ),
         const SizedBox(height: 20),
-        ElevatedButton(
+        Hero(
+          tag: 'login',
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(290, 63),
+              backgroundColor: Color(0xFF1042BF),
+              foregroundColor: Colors.white,
+              shape: StadiumBorder(
+                side: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 3,
+                ),
+              ),
+            ),
+            onPressed: () => setState(() {
+              _widget = _buildLoginWidget();
+            }),
+            child: Text(
+              'Log In',
+              style: TextStyle(
+                fontSize: 22,
+                fontFamily: 'Bai Jamjuree',
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLoginWidget() {
+    _header = 'Sign In';
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 60),
+          child: TextFormField(
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontFamily: 'Bai Jamjuree',
+              fontWeight: FontWeight.w400,
+            ),
+            decoration: InputDecoration(
+              hintText: 'Email',
+              hintStyle: TextStyle(
+                color: Color(0xFF1042BF).withValues(alpha: .2),
+                fontSize: 20,
+                fontFamily: 'Bai Jamjuree',
+                fontWeight: FontWeight.w400,
+              ),
+              prefixIcon: Container(
+                margin: const EdgeInsets.only(right: 15),
+                child: Image.asset(
+                  "assets/email.png",
+                ),
+              ),
+              border: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
+                ),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
+                ),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 60),
+          child: TextFormField(
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontFamily: 'Bai Jamjuree',
+              fontWeight: FontWeight.w400,
+            ),
+            decoration: InputDecoration(
+              hintText: 'Password',
+              hintStyle: TextStyle(
+                color: Color(0xFF1042BF).withValues(alpha: .2),
+                fontSize: 20,
+                fontFamily: 'Bai Jamjuree',
+                fontWeight: FontWeight.w400,
+              ),
+              prefixIcon: Container(
+                margin: const EdgeInsets.only(right: 15),
+                child: Image.asset(
+                  "assets/lock.png",
+                ),
+              ),
+              border: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
+                ),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
+                ),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Hero(
+          tag: 'login',
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(290, 63),
+              shadowColor: Colors.transparent,
+              backgroundColor: Colors.transparent,
+              foregroundColor: Color(0xFF1042BF),
+              shape: StadiumBorder(
+                side: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 3,
+                ),
+              ),
+            ),
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => HomePage()));
+            },
+            child: Text(
+              'Sign In',
+              style: TextStyle(
+                fontSize: 22,
+                fontFamily: 'Bai Jamjuree',
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+        ),
+        // const SizedBox(height: 20),
+        ElevatedButton.icon(
+          icon: Image.asset("assets/google.png"),
           style: ElevatedButton.styleFrom(
             minimumSize: Size(290, 63),
             backgroundColor: Color(0xFF1042BF),
@@ -45,118 +216,235 @@ class SplashPage extends StatelessWidget {
             ),
           ),
           onPressed: () {},
-          child: Text(
-            'Log In',
+          label: Text(
+            'Sign In With Google',
             style: TextStyle(
-              fontSize: 22,
+              fontSize: 18,
               fontFamily: 'Bai Jamjuree',
               fontWeight: FontWeight.w400,
             ),
           ),
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Don’t have an account? ',
+              style: TextStyle(
+                fontSize: 14,
+                fontFamily: 'Bai Jamjuree',
+                fontWeight: FontWeight.w400,
+                color: Color(0xFF000000).withAlpha(70),
+              ),
+            ),
+            InkWell(
+              onTap: () => setState(() {
+                _widget = _buildSignupWidget();
+              }),
+              child: Text(
+                'Sign up',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'Bai Jamjuree',
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF1042BF),
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     );
+  }
 
-    final loginWidget = Container(
-      color: Colors.red,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
-            child: TextFormField(
-              style: TextStyle(
-                color: Colors.black,
+  Widget _buildSignupWidget() {
+    _header = 'Create Account';
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 60),
+          child: TextFormField(
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontFamily: 'Bai Jamjuree',
+              fontWeight: FontWeight.w400,
+            ),
+            decoration: InputDecoration(
+              hintText: 'Full Name',
+              hintStyle: TextStyle(
+                color: Color(0xFF1042BF).withValues(alpha: .2),
                 fontSize: 20,
                 fontFamily: 'Bai Jamjuree',
                 fontWeight: FontWeight.w400,
               ),
-              decoration: InputDecoration(
-                hintText: 'Email',
-                hintStyle: TextStyle(
-                  color: Color(0xFF1042BF).withValues(alpha: .2),
-                  fontSize: 20,
-                  fontFamily: 'Bai Jamjuree',
-                  fontWeight: FontWeight.w400,
+              prefixIcon: Container(
+                margin: const EdgeInsets.only(right: 15),
+                child: Image.asset(
+                  "assets/profile.png",
                 ),
-                prefixIcon: Container(
-                  margin: const EdgeInsets.only(right: 15),
-                  child: Image.asset(
-                    "assets/email.png",
-                  ),
+              ),
+              border: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
                 ),
-                border: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xFF1042BF),
-                    width: 2,
-                  ),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
                 ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xFF1042BF),
-                    width: 2,
-                  ),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xFF1042BF),
-                    width: 2,
-                  ),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
                 ),
               ),
             ),
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 60, vertical: 10),
-            child: TextFormField(
-              style: TextStyle(
-                color: Colors.black,
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 60),
+          child: TextFormField(
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontFamily: 'Bai Jamjuree',
+              fontWeight: FontWeight.w400,
+            ),
+            decoration: InputDecoration(
+              hintText: 'Email',
+              hintStyle: TextStyle(
+                color: Color(0xFF1042BF).withValues(alpha: .2),
                 fontSize: 20,
                 fontFamily: 'Bai Jamjuree',
                 fontWeight: FontWeight.w400,
               ),
-              decoration: InputDecoration(
-                hintText: 'Password',
-                hintStyle: TextStyle(
-                  color: Color(0xFF1042BF).withValues(alpha: .2),
-                  fontSize: 20,
-                  fontFamily: 'Bai Jamjuree',
-                  fontWeight: FontWeight.w400,
+              prefixIcon: Container(
+                margin: const EdgeInsets.only(right: 15),
+                child: Image.asset(
+                  "assets/email.png",
                 ),
-                prefixIcon: Container(
-                  margin: const EdgeInsets.only(right: 15),
-                  child: Image.asset(
-                    "assets/lock.png",
-                  ),
+              ),
+              border: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
                 ),
-                border: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xFF1042BF),
-                    width: 2,
-                  ),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
                 ),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xFF1042BF),
-                    width: 2,
-                  ),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xFF1042BF),
-                    width: 2,
-                  ),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
                 ),
               ),
             ),
           ),
-          // const SizedBox(height: 30),
-          ElevatedButton(
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 60),
+          child: TextFormField(
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontFamily: 'Bai Jamjuree',
+              fontWeight: FontWeight.w400,
+            ),
+            decoration: InputDecoration(
+              hintText: 'Password',
+              hintStyle: TextStyle(
+                color: Color(0xFF1042BF).withValues(alpha: .2),
+                fontSize: 20,
+                fontFamily: 'Bai Jamjuree',
+                fontWeight: FontWeight.w400,
+              ),
+              prefixIcon: Container(
+                margin: const EdgeInsets.only(right: 15),
+                child: Image.asset(
+                  "assets/lock.png",
+                ),
+              ),
+              border: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
+                ),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
+                ),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 60),
+          child: TextFormField(
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontFamily: 'Bai Jamjuree',
+              fontWeight: FontWeight.w400,
+            ),
+            decoration: InputDecoration(
+              hintText: 'Confirm Password',
+              hintStyle: TextStyle(
+                color: Color(0xFF1042BF).withValues(alpha: .2),
+                fontSize: 20,
+                fontFamily: 'Bai Jamjuree',
+                fontWeight: FontWeight.w400,
+              ),
+              prefixIcon: Container(
+                margin: const EdgeInsets.only(right: 15),
+                child: Image.asset(
+                  "assets/lock.png",
+                ),
+              ),
+              border: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
+                ),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
+                ),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0xFF1042BF),
+                  width: 2,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Hero(
+          tag: 'signup',
+          child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               minimumSize: Size(290, 63),
-              shadowColor: Colors.transparent,
-              backgroundColor: Colors.transparent,
-              foregroundColor: Color(0xFF1042BF),
+              backgroundColor: Color(0xFF1042BF),
+              foregroundColor: Colors.white,
               shape: StadiumBorder(
                 side: BorderSide(
                   color: Color(0xFF1042BF),
@@ -170,112 +458,104 @@ class SplashPage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 22,
                 fontFamily: 'Bai Jamjuree',
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          // const SizedBox(height: 20),
-          ElevatedButton.icon(
-            icon: Image.asset("assets/google.png"),
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(290, 63),
-              backgroundColor: Color(0xFF1042BF),
-              foregroundColor: Colors.white,
-              shape: StadiumBorder(
-                side: BorderSide(
-                  color: Color(0xFF1042BF),
-                  width: 3,
-                ),
-              ),
-            ),
-            onPressed: () {},
-            label: Text(
-              'Sign In With Google',
-              style: TextStyle(
-                fontSize: 22,
-                fontFamily: 'Bai Jamjuree',
                 fontWeight: FontWeight.w400,
               ),
             ),
           ),
-          // const SizedBox(width: 10),
-          Text.rich(
-            TextSpan(
-              text: 'Don’t have an account?',
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Already have an account? ',
               style: TextStyle(
                 fontSize: 14,
                 fontFamily: 'Bai Jamjuree',
                 fontWeight: FontWeight.w400,
                 color: Color(0xFF000000).withAlpha(70),
               ),
-              children: [
-                TextSpan(
-                  text: 'Sign up',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontFamily: 'Bai Jamjuree',
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF1042BF),
-                  ),
+            ),
+            InkWell(
+              onTap: () => setState(() {
+                _widget = _buildLoginWidget();
+              }),
+              child: Text(
+                'Log In',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'Bai Jamjuree',
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF1042BF),
                 ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 1,
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Image.asset(
-                    'assets/background.jpg',
-                    fit: BoxFit.fitHeight,
-                  ),
-                  Positioned(
-                    top: 100,
-                    left: 0,
-                    right: 0,
-                    child: Text(
-                      'Welcome',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 36,
-                        fontFamily: 'Bai Jamjuree',
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                        decoration: TextDecoration.underline,
-                        decorationStyle: TextDecorationStyle.solid,
-                        decorationColor: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: -40,
-                    left: -10,
-                    right: -10,
-                    child: Image.asset(
-                      'assets/vector.png',
-                      fit: BoxFit.fitWidth,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                child: loginWidget,
               ),
             ),
           ],
+        ),
+      ],
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _widget = _buildWelcomeWidget();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SingleChildScrollView(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              Expanded(
+                flex: 4,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image.asset(
+                      'assets/background.jpg',
+                      fit: BoxFit.fitHeight,
+                    ),
+                    Positioned(
+                      top: 100,
+                      left: 0,
+                      right: 0,
+                      child: Text(
+                        _header,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 36,
+                          fontFamily: 'Bai Jamjuree',
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          decoration: TextDecoration.underline,
+                          decorationStyle: TextDecorationStyle.solid,
+                          decorationColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: -40,
+                      left: -10,
+                      right: -10,
+                      child: Image.asset(
+                        'assets/vector.png',
+                        fit: BoxFit.fitWidth,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 5,
+                child: _widget,
+              ),
+            ],
+          ),
         ),
       ),
     );
