@@ -19,59 +19,53 @@ class _SplashPageState extends State<SplashPage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Hero(
-          tag: 'signup',
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(290, 63),
-              shadowColor: Colors.transparent,
-              backgroundColor: Colors.transparent,
-              foregroundColor: Color(0xFF1042BF),
-              shape: StadiumBorder(
-                side: BorderSide(
-                  color: Color(0xFF1042BF),
-                  width: 3,
-                ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(290, 63),
+            shadowColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+            foregroundColor: Color(0xFF1042BF),
+            shape: StadiumBorder(
+              side: BorderSide(
+                color: Color(0xFF1042BF),
+                width: 3,
               ),
             ),
-            onPressed: () => setState(() {
-              _widget = _buildSignupWidget();
-            }),
-            child: Text(
-              'Sign Up',
-              style: TextStyle(
-                fontSize: 22,
-                fontFamily: 'Bai Jamjuree',
-                fontWeight: FontWeight.w700,
-              ),
+          ),
+          onPressed: () => setState(() {
+            _widget = _buildSignInWidget();
+          }),
+          child: Text(
+            'Sign In',
+            style: TextStyle(
+              fontSize: 22,
+              fontFamily: 'Bai Jamjuree',
+              fontWeight: FontWeight.w700,
             ),
           ),
         ),
         const SizedBox(height: 20),
-        Hero(
-          tag: 'login',
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(290, 63),
-              backgroundColor: Color(0xFF1042BF),
-              foregroundColor: Colors.white,
-              shape: StadiumBorder(
-                side: BorderSide(
-                  color: Color(0xFF1042BF),
-                  width: 3,
-                ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(290, 63),
+            backgroundColor: Color(0xFF1042BF),
+            foregroundColor: Colors.white,
+            shape: StadiumBorder(
+              side: BorderSide(
+                color: Color(0xFF1042BF),
+                width: 3,
               ),
             ),
-            onPressed: () => setState(() {
-              _widget = _buildLoginWidget();
-            }),
-            child: Text(
-              'Log In',
-              style: TextStyle(
-                fontSize: 22,
-                fontFamily: 'Bai Jamjuree',
-                fontWeight: FontWeight.w400,
-              ),
+          ),
+          onPressed: () => setState(() {
+            _widget = _buildSignupWidget();
+          }),
+          child: Text(
+            'Sign Up',
+            style: TextStyle(
+              fontSize: 22,
+              fontFamily: 'Bai Jamjuree',
+              fontWeight: FontWeight.w400,
             ),
           ),
         ),
@@ -79,7 +73,7 @@ class _SplashPageState extends State<SplashPage> {
     );
   }
 
-  Widget _buildLoginWidget() {
+  Widget _buildSignInWidget() {
     _header = 'Sign In';
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -172,32 +166,28 @@ class _SplashPageState extends State<SplashPage> {
             ),
           ),
         ),
-        Hero(
-          tag: 'login',
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(290, 63),
-              shadowColor: Colors.transparent,
-              backgroundColor: Colors.transparent,
-              foregroundColor: Color(0xFF1042BF),
-              shape: StadiumBorder(
-                side: BorderSide(
-                  color: Color(0xFF1042BF),
-                  width: 3,
-                ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(290, 63),
+            shadowColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+            foregroundColor: Color(0xFF1042BF),
+            shape: StadiumBorder(
+              side: BorderSide(
+                color: Color(0xFF1042BF),
+                width: 3,
               ),
             ),
-            onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => HomePage()));
-            },
-            child: Text(
-              'Sign In',
-              style: TextStyle(
-                fontSize: 22,
-                fontFamily: 'Bai Jamjuree',
-                fontWeight: FontWeight.w700,
-              ),
+          ),
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+          },
+          child: Text(
+            'Sign In',
+            style: TextStyle(
+              fontSize: 22,
+              fontFamily: 'Bai Jamjuree',
+              fontWeight: FontWeight.w700,
             ),
           ),
         ),
@@ -477,10 +467,10 @@ class _SplashPageState extends State<SplashPage> {
             ),
             InkWell(
               onTap: () => setState(() {
-                _widget = _buildLoginWidget();
+                _widget = _buildSignInWidget();
               }),
               child: Text(
-                'Log In',
+                'Sign In',
                 style: TextStyle(
                   fontSize: 14,
                   fontFamily: 'Bai Jamjuree',

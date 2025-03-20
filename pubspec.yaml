@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   animated_bottom_navigation_bar: ^1.4.0
   fl_chart: ^0.70.2
+  time_picker_spinner: ^1.0.2
+  wheel_picker: ^0.2.1
 
 dev_dependencies:
   flutter_test:

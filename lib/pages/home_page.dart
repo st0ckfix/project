@@ -1,6 +1,7 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:project/screens/home_screen.dart';
+import 'package:project/screens/list_station_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,6 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late int _bottomNavIndex;
   late List<(String, String)> _list;
+  late List<Widget> _screens;
 
   @override
   void initState() {
@@ -24,37 +26,29 @@ class _HomePageState extends State<HomePage> {
       ('Lịch Sử', 'assets/history.png'),
       ('Tài Khoản', 'assets/solid_people.png'),
     ];
+
+    _screens = [HomeScreen(), ListStationScreen(), Container(), Container()];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Home Page'),
+          title: Text(_list[_bottomNavIndex].$1),
+          centerTitle: true,
         ),
         body: Center(
           child: LayoutBuilder(
             builder: (context, constraints) {
-              return Container(
+              return SizedBox(
                 height: constraints.maxHeight,
                 width: constraints.maxWidth,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFFBCE8FF),
-                      Color(0xFFFFFFFF),
-                    ],
-                    stops: [0.0, 0.5],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                ),
-                child: HomeScreen(),
+                child: _screens[_bottomNavIndex],
               );
             },
           ),
         ),
-        floatingActionButton: Container(
+        floatingActionButton: SizedBox(
           height: 80,
           width: 80,
           child: FittedBox(
