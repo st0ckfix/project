@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:project/data_test/schedule_test.dart';
+import 'package:project/model/device.dart';
+import 'package:project/model/schedule.dart';
 import 'package:project/pages/change_schedule_page.dart';
+import 'package:project/widgets/schedule_list_item.dart';
 
 class DevicePage extends StatelessWidget {
-  const DevicePage({super.key, required this.name});
+  const DevicePage({super.key, required this.deviceModel});
 
-  final String name;
+  final DeviceModel deviceModel;
 
   @override
   Widget build(BuildContext context) {
-    final list = listSchedule;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          name,
+          deviceModel.name,
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -21,7 +22,18 @@ class DevicePage extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChangeSchedulePage(
+                  scheduleModel: ScheduleModel(
+                    description: '',
+                    timeOfDay: TimeOfDay.now(),
+                    isDone: false,
+                  ),
+                ),
+              ),
+            ),
             icon: Image.asset('assets/add.png'),
           ),
         ],
@@ -30,28 +42,23 @@ class DevicePage extends StatelessWidget {
         padding: EdgeInsets.all(10),
         child: ListView.separated(
           itemBuilder: (context, index) {
-            return ListTile(
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeSchedulePage())),
-              title: Text(
-                list[index].timeOfDay.format(context).replaceFirst('AM', '').replaceFirst('PM', ''),
-                style: TextStyle(fontSize: 48),
+            final schedule = deviceModel.schedules![index];
+            return ScheduleListItem(
+              schedule: schedule,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChangeSchedulePage(
+                    scheduleModel: schedule,
+                  ),
+                ),
               ),
-              subtitle: Text(
-                list[index].description,
-                style: TextStyle(fontSize: 22),
-              ),
-              trailing: Transform.scale(
-                  scale: 1.5,
-                  child: Switch.adaptive(
-                    value: list[index].isDone,
-                    onChanged: (boolean) {},
-                  )),
             );
           },
           separatorBuilder: (context, index) {
             return const Divider();
           },
-          itemCount: list.length,
+          itemCount: deviceModel.schedules?.length ?? 0,
         ),
       ),
     );

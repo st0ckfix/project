@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:project/model/schedule.dart';
 import 'package:project/pages/repeat_schedule_page.dart';
 import 'package:wheel_picker/wheel_picker.dart';
+import 'package:project/widgets/schedule_option_row.dart';
 
 class ChangeSchedulePage extends StatefulWidget {
-  const ChangeSchedulePage({super.key});
+  const ChangeSchedulePage({super.key, required this.scheduleModel});
+
+  final ScheduleModel scheduleModel;
 
   @override
   State<ChangeSchedulePage> createState() => _ChangeSchedulePageState();
@@ -52,11 +56,12 @@ class _ChangeSchedulePageState extends State<ChangeSchedulePage> {
                   width: 30,
                   child: WheelPicker(
                     itemCount: 24,
+                    initialIndex: widget.scheduleModel.timeOfDay.hour - 1,
                     builder: (context, index) => Text(
                       (index < 9 ? '0' : '') + (index + 1).toString(),
                       style: TextStyle(fontSize: 22),
                     ),
-                    selectedIndexColor: Colors.orange,
+                    selectedIndexColor: Color(0xFF1E90FF),
                     looping: true,
                     style: WheelPickerStyle(itemExtent: 25),
                   ),
@@ -67,11 +72,12 @@ class _ChangeSchedulePageState extends State<ChangeSchedulePage> {
                   width: 30,
                   child: WheelPicker(
                     itemCount: 59,
+                    initialIndex: widget.scheduleModel.timeOfDay.minute - 1,
                     builder: (context, index) => Text(
                       (index < 9 ? '0' : '') + (index + 1).toString(),
                       style: TextStyle(fontSize: 22),
                     ),
-                    selectedIndexColor: Colors.orange,
+                    selectedIndexColor: Color(0xFF1E90FF),
                     looping: true,
                     style: WheelPickerStyle(itemExtent: 25),
                   ),
@@ -87,56 +93,38 @@ class _ChangeSchedulePageState extends State<ChangeSchedulePage> {
               ),
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      Text('Lặp lại'),
-                      Spacer(),
-                      Text('Hàng ngày'),
-                      IconButton(
-                        onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RepeatSchedulePage())),
-                        icon: Icon(
-                          Icons.arrow_forward_ios_sharp,
-                        ),
+                  ScheduleOptionRow(
+                    title: 'Lặp lại',
+                    value: 'Hàng ngày',
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RepeatSchedulePage(),
                       ),
-                    ],
+                    ),
+                  ),
+                  Divider(),
+                  ScheduleOptionRow(
+                    title: 'Nhãn',
+                    value: widget.scheduleModel.description,
+                    onTap: () {},
+                  ),
+                  Divider(),
+                  ScheduleOptionRow(
+                    title: 'Âm thanh',
+                    value: 'Hướng tâm',
+                    onTap: () {},
                   ),
                   Divider(),
                   Row(
                     children: [
-                      Text('Nhãn'),
-                      Spacer(),
-                      InkWell(
-                        onTap: () {},
-                        child: Text(
-                          'Báo thức',
+                      Text(
+                        'Báo lại',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.arrow_forward_ios_sharp,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Divider(),
-                  Row(
-                    children: [
-                      Text('Âm thanh'),
-                      Spacer(),
-                      Text('Hướng tâm'),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.arrow_forward_ios_sharp,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Divider(),
-                  Row(
-                    children: [
-                      Text('Báo lại'),
                       Spacer(),
                       Switch(
                         value: true,

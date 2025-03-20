@@ -1,9 +1,9 @@
-import 'package:project/model/device.dart';
 import 'package:project/model/weather.dart';
 
 final listWeather = [
   WeatherModel(
     icon: 'assets/cloud.png',
+    image: 'assets/cloud2.png',
     time: 9,
     temperature: 18.0,
     description: 'Cloudy',
@@ -13,6 +13,7 @@ final listWeather = [
   ),
   WeatherModel(
     icon: 'assets/blowing.png',
+    image: 'assets/blowing2.png',
     time: 10,
     temperature: 19.0,
     description: 'Windy',
@@ -22,6 +23,7 @@ final listWeather = [
   ),
   WeatherModel(
     icon: 'assets/sun_cloud.png',
+    image: 'assets/sun_cloud2.png',
     time: 11,
     temperature: 24.0,
     description: 'Partly Cloudy',
@@ -31,6 +33,7 @@ final listWeather = [
   ),
   WeatherModel(
     icon: 'assets/sunny.png',
+    image: 'assets/sunny2.png',
     time: 12,
     temperature: 25.0,
     description: 'Sunny',
@@ -40,6 +43,7 @@ final listWeather = [
   ),
   WeatherModel(
     icon: 'assets/rain.png',
+    image: 'assets/rain2.png',
     time: 13,
     temperature: 26.0,
     description: 'Rainy',
@@ -49,25 +53,61 @@ final listWeather = [
   ),
 ];
 
-final listDevice = [
-  DeviceModel(
-    name: 'Device 1',
-    weather: listWeather[0],
+final List<WeatherModel> listWeather2 = [
+  WeatherModel(
+    icon: 'assets/sunny.png',
+    image: 'assets/sunny2.png',
+    time: 12,
+    temperature: 30.0,
+    description: 'Sunny',
+    humidity: 50,
+    moisture: 30,
+    light: 700,
   ),
-  DeviceModel(
-    name: 'Device 2',
-    weather: listWeather[1],
+  WeatherModel(
+    icon: 'assets/rain.png',
+    image: 'assets/rain2.png',
+    time: 16,
+    temperature: 21.0,
+    description: 'Rainy',
+    humidity: 40,
+    moisture: 20,
+    light: 100,
   ),
-  DeviceModel(
-    name: 'Device 3',
-    weather: listWeather[2],
+];
+
+final List<WeatherModel> listWeather3 = [
+  WeatherModel(
+    icon: 'assets/cloud.png',
+    image: 'assets/cloud2.png',
+    time: 9,
+    temperature: 18.0,
+    description: 'Cloudy',
+    humidity: 80,
+    moisture: 60,
+    light: 100,
   ),
-  DeviceModel(
-    name: 'Device 4',
-    weather: listWeather[3],
+  WeatherModel(
+    icon: 'assets/blowing.png',
+    image: 'assets/blowing2.png',
+    time: 10,
+    temperature: 19.0,
+    description: 'Windy',
+    humidity: 70,
+    moisture: 50,
+    light: 200,
   ),
-  DeviceModel(
-    name: 'Device 5',
-    weather: listWeather[4],
+];
+
+final List<WeatherModel> listWeather4 = [
+  WeatherModel(
+    icon: 'assets/rain.png',
+    image: 'assets/rain2.png',
+    time: 13,
+    temperature: 26.0,
+    description: 'Rainy',
+    humidity: 40,
+    moisture: 20,
+    light: 500,
   ),
 ];
