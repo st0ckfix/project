@@ -38,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
       style: TextStyle(
         fontSize: 24,
       ),
+      textAlign: TextAlign.center,
     );
   }
 
@@ -48,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
         fontWeight: FontWeight.bold,
         fontSize: 48,
       ),
+      textAlign: TextAlign.center,
     );
   }
 
@@ -62,10 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
           borderData: FlBorderData(show: false),
           lineBarsData: [
             LineChartBarData(
-              spots: List.generate(
-                  [18, 19, 24, 25, 26].length,
-                  (index) => FlSpot(
-                      index.toDouble(), [18.0, 19.0, 24.0, 25.0, 26.0][index])),
+              spots: List.generate([18, 19, 24, 25, 26].length, (index) => FlSpot(index.toDouble(), [18.0, 19.0, 24.0, 25.0, 26.0][index])),
               isCurved: true,
               gradient: LinearGradient(
                 colors: [Colors.blue, Colors.orange],
@@ -89,9 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
           int index = entry.key;
           WeatherModel weather = entry.value;
           bool isSelected = index == _index;
-          String time = weather.time <= 12
-              ? '${weather.time}AM'
-              : '${weather.time - 12}PM';
+          String time = weather.time <= 12 ? '${weather.time}AM' : '${weather.time - 12}PM';
           String temperature = '${weather.temperature.toStringAsFixed(0)}°';
           return GestureDetector(
             onTap: () {
@@ -140,6 +137,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final weatherModel = _list[_index];
+    final listWidget = [
+      _buildWeatherImage(weatherModel),
+      _buildWeatherDescription(weatherModel),
+      _buildWeatherTemperature(weatherModel),
+      _buildWeatherChart(),
+      _buildWeatherList(),
+    ];
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -153,16 +157,14 @@ class _HomeScreenState extends State<HomeScreen> {
           end: Alignment.bottomCenter,
         ),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildWeatherImage(weatherModel),
-          _buildWeatherDescription(weatherModel),
-          _buildWeatherTemperature(weatherModel),
-          _buildWeatherChart(),
-          _buildWeatherList(),
-        ],
-      ),
+      child: ListView.separated(
+          itemBuilder: (context, index) {
+            return listWidget[index];
+          },
+          separatorBuilder: (context, index) {
+            return SizedBox(height: 20);
+          },
+          itemCount: 5),
     );
   }
 }

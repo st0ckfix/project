@@ -28,12 +28,7 @@ class _HomePageState extends State<HomePage> {
       ('Tài Khoản', 'assets/solid_people.png'),
     ];
 
-    _screens = [
-      HomeScreen(),
-      ListStationScreen(),
-      HistoryScreen(),
-      Container()
-    ];
+    _screens = [HomeScreen(), ListStationScreen(), HistoryScreen(), Container()];
   }
 
   AppBar _buildAppBar() {

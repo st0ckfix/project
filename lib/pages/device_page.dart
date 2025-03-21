@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:project/model/device.dart';
 import 'package:project/model/schedule.dart';
@@ -30,6 +32,7 @@ class DevicePage extends StatelessWidget {
                     description: '',
                     timeOfDay: TimeOfDay.now(),
                     isDone: false,
+                    isRepat: true,
                   ),
                 ),
               ),
@@ -42,17 +45,31 @@ class DevicePage extends StatelessWidget {
         padding: EdgeInsets.all(10),
         child: ListView.separated(
           itemBuilder: (context, index) {
-            final schedule = deviceModel.schedules![index];
+            ScheduleModel schedule = deviceModel.schedules![index];
             return ScheduleListItem(
               schedule: schedule,
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChangeSchedulePage(
-                    scheduleModel: schedule,
+              onTap: () {
+                final Completer<TimeOfDay?> completer = Completer();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChangeSchedulePage(
+                      scheduleModel: schedule,
+                    ),
                   ),
-                ),
-              ),
+                ).then((value) {
+                  if (value != null) {
+                    final newValue = value as TimeOfDay;
+                    schedule = deviceModel.schedules![index].copyWith(
+                      timeOfDay: newValue,
+                    );
+                    completer.complete(newValue);
+                  } else {
+                    completer.complete(null);
+                  }
+                });
+                return completer.future;
+              },
             );
           },
           separatorBuilder: (context, index) {

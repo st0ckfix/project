@@ -14,6 +14,18 @@ class ChangeSchedulePage extends StatefulWidget {
 }
 
 class _ChangeSchedulePageState extends State<ChangeSchedulePage> {
+  late WheelPickerController _hourController;
+  late WheelPickerController _minuteController;
+  late bool isRepeat;
+
+  @override
+  void initState() {
+    super.initState();
+    _hourController = WheelPickerController(itemCount: 23, initialIndex: widget.scheduleModel.timeOfDay.hour - 1);
+    _minuteController = WheelPickerController(itemCount: 59, initialIndex: widget.scheduleModel.timeOfDay.minute - 1);
+    isRepeat = widget.scheduleModel.isRepat;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +46,14 @@ class _ChangeSchedulePageState extends State<ChangeSchedulePage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              if (widget.scheduleModel.timeOfDay.hour == _hourController.selected && widget.scheduleModel.timeOfDay.minute == _minuteController.selected) {
+                Navigator.pop(context);
+              } else {
+                TimeOfDay(hour: _hourController.selected, minute: _minuteController.selected);
+                Navigator.pop(context, TimeOfDay(hour: _hourController.selected + 1, minute: _minuteController.selected + 1));
+              }
+            },
             icon: Text(
               'Lưu',
               style: TextStyle(
@@ -55,8 +74,7 @@ class _ChangeSchedulePageState extends State<ChangeSchedulePage> {
                   height: 250,
                   width: 30,
                   child: WheelPicker(
-                    itemCount: 24,
-                    initialIndex: widget.scheduleModel.timeOfDay.hour - 1,
+                    controller: _hourController,
                     builder: (context, index) => Text(
                       (index < 9 ? '0' : '') + (index + 1).toString(),
                       style: TextStyle(fontSize: 22),
@@ -71,8 +89,7 @@ class _ChangeSchedulePageState extends State<ChangeSchedulePage> {
                   height: 250,
                   width: 30,
                   child: WheelPicker(
-                    itemCount: 59,
-                    initialIndex: widget.scheduleModel.timeOfDay.minute - 1,
+                    controller: _minuteController,
                     builder: (context, index) => Text(
                       (index < 9 ? '0' : '') + (index + 1).toString(),
                       style: TextStyle(fontSize: 22),
@@ -126,10 +143,16 @@ class _ChangeSchedulePageState extends State<ChangeSchedulePage> {
                         ),
                       ),
                       Spacer(),
-                      Switch(
-                        value: true,
-                        onChanged: (change) {},
-                      ),
+                      StatefulBuilder(builder: (context, setStateBuilder) {
+                        return Switch(
+                          value: isRepeat,
+                          onChanged: (change) {
+                            setStateBuilder(() {
+                              isRepeat = change;
+                            });
+                          },
+                        );
+                      }),
                     ],
                   ),
                 ],

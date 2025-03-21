@@ -19,7 +19,7 @@ class DeviceInfoCard extends StatelessWidget {
     return Expanded(
       child: Container(
         padding: EdgeInsets.all(10),
-        margin: EdgeInsets.all(10),
+        margin: EdgeInsets.all(5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: Color(0xFF1387DA).withOpacity(0.7),
@@ -38,6 +38,7 @@ class DeviceInfoCard extends StatelessWidget {
                 SizedBox(width: 5),
                 Text(
                   label,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(color: Colors.white),
                 ),
               ],
