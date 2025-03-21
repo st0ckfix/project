@@ -1,6 +1,10 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:project/bloc/authenticate/authenticate_cubit.dart';
+import 'package:project/bloc/user/user_cubit.dart';
 import 'package:project/pages/home_page.dart';
 import 'package:project/widgets/custom_button.dart';
 import 'package:project/widgets/custom_text_field.dart';
@@ -45,65 +49,96 @@ class _AuthenPageState extends State<AuthenPage> {
 
   Widget _buildSignInWidget() {
     _header = 'Sign In';
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        CustomTextField(
-          hintText: 'Email',
-          assetPath: 'assets/email.png',
-        ),
-        CustomTextField(
-          hintText: 'Password',
-          assetPath: 'assets/lock.png',
-          obscureText: true,
-        ),
-        CustomButton(
-          text: 'Sign In',
-          backgroundColor: Colors.transparent,
-          foregroundColor: Color(0xFF1042BF),
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomePage()));
-          },
-        ),
-        CustomButton(
-          text: 'Sign In With Google',
-          backgroundColor: Color(0xFF1042BF),
-          foregroundColor: Colors.white,
-          onPressed: () {},
-          icon: Image.asset("assets/google.png"),
-          fontSize: 18,
-          fontWeight: FontWeight.w400,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+    final usernameController = TextEditingController();
+    final passwordController = TextEditingController();
+    return BlocListener<AuthenticateCubit, AuthenticateCubitState>(
+      listener: (context, state) {
+        if (state is AuthenticateCubitLoading) {
+          context.loaderOverlay.show();
+        } else {
+          context.loaderOverlay.hide();
+        }
+
+        if (state is AuthenticateCubitLoaded) {
+          usernameController.clear();
+          passwordController.clear();
+          BlocProvider.of<UserCubit>(context).pushUser(state.userModel);
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HomePage()));
+        }
+
+        if (state is AuthenticateCubitError) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('Không tìm thấy tài khoản'),
+            backgroundColor: Colors.red,
+          ));
+        }
+      },
+      child: BlocProvider<AuthenticateCubit>(
+        create: (context) => AuthenticateCubit(authenticateUsecase: sl()),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text(
-              'Don’t have an account? ',
-              style: TextStyle(
-                fontSize: 14,
-                fontFamily: 'Bai Jamjuree',
-                fontWeight: FontWeight.w400,
-                color: Color(0xFF000000).withAlpha(70),
-              ),
+            CustomTextField(
+              controller: usernameController,
+              hintText: 'Email',
+              assetPath: 'assets/email.png',
             ),
-            InkWell(
-              onTap: () => setState(() {
-                _widget = _buildSignupWidget();
-              }),
-              child: Text(
-                'Sign up',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'Bai Jamjuree',
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF1042BF),
+            CustomTextField(
+              controller: passwordController,
+              hintText: 'Password',
+              assetPath: 'assets/lock.png',
+              obscureText: true,
+            ),
+            CustomButton(
+              text: 'Sign In',
+              backgroundColor: Colors.transparent,
+              foregroundColor: Color(0xFF1042BF),
+              onPressed: () {
+                BlocProvider.of<AuthenticateCubit>(context)
+                    .login(usernameController.text, passwordController.text);
+              },
+            ),
+            CustomButton(
+              text: 'Sign In With Google',
+              backgroundColor: Color(0xFF1042BF),
+              foregroundColor: Colors.white,
+              onPressed: () {},
+              icon: Image.asset("assets/google.png"),
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Don’t have an account? ',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontFamily: 'Bai Jamjuree',
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF000000).withAlpha(70),
+                  ),
                 ),
-              ),
+                InkWell(
+                  onTap: () => setState(() {
+                    _widget = _buildSignupWidget();
+                  }),
+                  child: Text(
+                    'Sign up',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: 'Bai Jamjuree',
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF1042BF),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-      ],
+      ),
     );
   }
 

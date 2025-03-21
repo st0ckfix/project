@@ -1,8 +1,16 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:project/bloc/device_list/device_list_cubit.dart';
+import 'package:project/bloc/history/history_cubit.dart';
+import 'package:project/bloc/weather/weather_cubit.dart';
 import 'package:project/screens/history_screen.dart';
 import 'package:project/screens/home_screen.dart';
 import 'package:project/screens/list_station_screen.dart';
+import 'package:project/screens/profile_screen.dart';
+
+final sl = GetIt.instance;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,7 +36,12 @@ class _HomePageState extends State<HomePage> {
       ('Tài Khoản', 'assets/solid_people.png'),
     ];
 
-    _screens = [HomeScreen(), ListStationScreen(), HistoryScreen(), Container()];
+    _screens = [
+      HomeScreen(),
+      ListStationScreen(),
+      HistoryScreen(),
+      ProfileScreen(),
+    ];
   }
 
   AppBar _buildAppBar() {
@@ -75,7 +88,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildBottomNavigationBar() {
     return AnimatedBottomNavigationBar.builder(
-      height: 75,
+      height: 65,
       itemCount: _list.length,
       tabBuilder: (index, isActive) {
         return Column(
@@ -84,8 +97,8 @@ class _HomePageState extends State<HomePage> {
           children: [
             Image.asset(
               _list[index].$2,
-              width: 40,
-              height: 40,
+              width: 32,
+              height: 32,
               color: isActive ? Color(0xFF042B90) : Colors.white,
             ),
             Text(
@@ -111,12 +124,25 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: _buildBody(),
-      floatingActionButton: _buildFloatingActionButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: _buildBottomNavigationBar(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<DeviceListCubit>(
+          create: (context) => DeviceListCubit(deviceUsecase: sl()),
+        ),
+        BlocProvider<HistoryCubit>(
+          create: (context) => HistoryCubit(historyUsecase: sl()),
+        ),
+        BlocProvider<WeatherCubit>(
+          create: (context) => WeatherCubit(weatherUsecase: sl()),
+        ),
+      ],
+      child: Scaffold(
+        appBar: _buildAppBar(),
+        body: _buildBody(),
+        floatingActionButton: _buildFloatingActionButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: _buildBottomNavigationBar(),
+      ),
     );
   }
 }

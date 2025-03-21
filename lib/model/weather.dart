@@ -18,4 +18,30 @@ class WeatherModel {
     required this.moisture,
     required this.light,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'icon': icon,
+      'image': image,
+      'time': time,
+      'temperature': temperature,
+      'description': description,
+      'humidity': humidity,
+      'moisture': moisture,
+      'light': light,
+    };
+  }
+
+  factory WeatherModel.fromJson(Map<String, dynamic> json) {
+    return WeatherModel(
+      icon: json['icon'],
+      image: json['image'],
+      time: json['time'],
+      temperature: json['temperature'],
+      description: json['description'],
+      humidity: json['humidity'],
+      moisture: json['moisture'],
+      light: json['light'],
+    );
+  }
 }

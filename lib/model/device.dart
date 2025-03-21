@@ -11,4 +11,21 @@ class DeviceModel {
     required this.weather,
     this.schedules,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'weather': weather.toJson(),
+      'schedules': schedules?.map((x) => x.toJson()).toList(),
+    };
+  }
+
+  factory DeviceModel.fromJson(Map<String, dynamic> json) {
+    return DeviceModel(
+      name: json['name'],
+      weather: WeatherModel.fromJson(json['weather']),
+      schedules: List<ScheduleModel>.from(
+          json['schedules'].map((x) => ScheduleModel.fromJson(x))),
+    );
+  }
 }

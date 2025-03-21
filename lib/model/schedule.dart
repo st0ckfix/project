@@ -26,4 +26,25 @@ class ScheduleModel {
       isRepat: isRepat ?? this.isRepat,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'description': description,
+      'timeOfDay': '${timeOfDay.hour}:${timeOfDay.minute}',
+      'isDone': isDone,
+      'isRepat': isRepat,
+    };
+  }
+
+  factory ScheduleModel.fromJson(Map<String, dynamic> json) {
+    return ScheduleModel(
+      description: json['description'],
+      timeOfDay: TimeOfDay(
+        hour: int.parse(json['timeOfDay'].split(':')[0]),
+        minute: int.parse(json['timeOfDay'].split(':')[1]),
+      ),
+      isDone: json['isDone'],
+      isRepat: json['isRepat'],
+    );
+  }
 }

@@ -4,22 +4,22 @@ import 'package:project/model/device.dart';
 
 final listDevice = [
   DeviceModel(
-    name: 'Device 1',
+    name: 'Device A-129',
     weather: listWeather[0],
     schedules: listSchedule,
   ),
   DeviceModel(
-    name: 'Device 2',
+    name: 'Device A-130S',
     weather: listWeather[1],
     schedules: listSchedule2,
   ),
   DeviceModel(
-    name: 'Device 3',
+    name: 'Device BI-112',
     weather: listWeather[2],
     schedules: listSchedule3,
   ),
   DeviceModel(
-    name: 'Device 4',
+    name: 'Device B-SHU',
     weather: listWeather[3],
     schedules: listSchedule4,
   ),
