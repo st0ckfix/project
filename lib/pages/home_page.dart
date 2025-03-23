@@ -2,8 +2,9 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:project/bloc/device_list/device_list_cubit.dart';
-import 'package:project/bloc/history/history_cubit.dart';
+import 'package:project/bloc/device_list/device_cubit.dart';
+import 'package:project/bloc/profile/profile_cubit.dart';
+import 'package:project/bloc/schedule/schedule_cubit.dart';
 import 'package:project/bloc/weather/weather_cubit.dart';
 import 'package:project/screens/history_screen.dart';
 import 'package:project/screens/home_screen.dart';
@@ -126,14 +127,17 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<DeviceListCubit>(
-          create: (context) => DeviceListCubit(deviceUsecase: sl()),
-        ),
-        BlocProvider<HistoryCubit>(
-          create: (context) => HistoryCubit(historyUsecase: sl()),
+        BlocProvider<DeviceCubit>(
+          create: (context) => DeviceCubit(sl(), sl(), sl()),
         ),
         BlocProvider<WeatherCubit>(
-          create: (context) => WeatherCubit(weatherUsecase: sl()),
+          create: (context) => WeatherCubit(sl(), sl()),
+        ),
+        BlocProvider<ProfileCubit>(
+          create: (context) => ProfileCubit(sl(), sl()),
+        ),
+        BlocProvider<ScheduleCubit>(
+          create: (context) => ScheduleCubit(sl(), sl(), sl(), sl()),
         ),
       ],
       child: Scaffold(

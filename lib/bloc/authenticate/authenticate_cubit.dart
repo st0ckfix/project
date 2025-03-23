@@ -1,34 +1,67 @@
-import 'package:dio/dio.dart';
-import 'package:equatable/equatable.dart';
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project/model/user.dart';
-import 'package:project/usecase/authenticate_usecase.dart';
+import 'package:project/service/sp.dart';
+import 'package:project/usecase/authenticate/login_usecase.dart';
+import 'package:project/usecase/authenticate/logout_usecase.dart';
+import 'package:project/usecase/authenticate/register_usecase.dart';
 
 part 'authenticate_state.dart';
 
-class AuthenticateCubit extends Cubit<AuthenticateCubitState> {
-  AuthenticateCubit({required this.authenticateUsecase})
-      : super(AuthenticateCubitInitial());
+class AuthenticateCubit extends Cubit<AuthenticateState> {
+  final LoginUsecase _loginUsecase;
+  final LogoutUsecase _logoutUsecase;
+  final RegisterUsecase _registerUsecase;
+  final SharedPreferenceService _sharedPreferenceService;
 
-  final AuthenticateUsecase authenticateUsecase;
+  AuthenticateCubit(this._loginUsecase, this._logoutUsecase, this._registerUsecase, this._sharedPreferenceService) : super(AuthenticateInitialState());
 
-  Future login(String username, String password) async {
-    if (state is AuthenticateCubitLoaded) return;
-
-    emit(AuthenticateCubitLoading());
-    final reponse = await authenticateUsecase(params: (username, password));
-    reponse.fold(
-      (l) {
-        emit(AuthenticateCubitError(l));
-      },
-      (r) {
-        final user = UserModel.fromJson(r.data as Map<String, dynamic>);
-        emit(AuthenticateCubitLoaded(user));
-      },
-    );
+  Future<void> login(String username, String password) async {
+    emit(AuthenticateLoadingState());
+    try {
+      final result = await _loginUsecase.call(params: LoginParams(username: username, password: password));
+      result.fold(
+        (l) {
+          emit(AuthenticateErrorState(l.message.toString()));
+        },
+        (r) async {
+          await _sharedPreferenceService.saveToken('access_token', r.data['access_token']);
+          await _sharedPreferenceService.saveToken('refresh_token', r.data['refresh_token']);
+          emit(AuthenticateSuccessState());
+        },
+      );
+      emit(AuthenticateSuccessState());
+    } catch (e) {
+      emit(AuthenticateErrorState(e.toString()));
+    }
   }
 
-  Future logout() async {
-    emit(AuthenticateCubitInitial());
+  Future<void> logout() async {
+    emit(AuthenticateLoadingState());
+    try {
+      await _logoutUsecase.call();
+      emit(AuthenticateLogoutState());
+    } catch (e) {
+      emit(AuthenticateErrorState(e.toString()));
+    }
+  }
+
+  Future<void> register(String username, String email, String password) async {
+    emit(AuthenticateLoadingState());
+    try {
+      final result = await _registerUsecase.call(params: RegisterParams(username: username, email: email, password: password));
+      result.fold(
+        (l) {
+          log('message: ${l.message}');
+          emit(AuthenticateErrorState(l.message.toString()));
+        },
+        (r) {
+          emit(AuthenticateRegisterSuccessState());
+        },
+      );
+    } catch (e) {
+      log(e.toString());
+      emit(AuthenticateErrorState(e.toString()));
+    }
   }
 }

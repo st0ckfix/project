@@ -1,31 +1,30 @@
-import 'package:project/model/schedule.dart';
-import 'package:project/model/weather.dart';
+import 'package:latlng/latlng.dart';
 
 class DeviceModel {
-  final String name;
-  final WeatherModel weather;
-  final List<ScheduleModel>? schedules;
+  final String deviceId;
+  final String deviceName;
+  final LatLng location;
 
   DeviceModel({
-    required this.name,
-    required this.weather,
-    this.schedules,
+    required this.deviceId,
+    required this.deviceName,
+    required this.location,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'name': name,
-      'weather': weather.toJson(),
-      'schedules': schedules?.map((x) => x.toJson()).toList(),
+      'device_id': deviceId,
+      'device_name': deviceName,
+      'lat': location.latitude,
+      'lng': location.longitude,
     };
   }
 
   factory DeviceModel.fromJson(Map<String, dynamic> json) {
     return DeviceModel(
-      name: json['name'],
-      weather: WeatherModel.fromJson(json['weather']),
-      schedules: List<ScheduleModel>.from(
-          json['schedules'].map((x) => ScheduleModel.fromJson(x))),
+      deviceId: json['device_id'],
+      deviceName: json['device_name'],
+      location: LatLng(json['lat'], json['lng']),
     );
   }
 }

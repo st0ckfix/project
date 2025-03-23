@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:project/bloc/authenticate/authenticate_cubit.dart';
-import 'package:project/bloc/user/user_cubit.dart';
 import 'package:project/config/di.dart';
 import 'package:project/pages/authen_page.dart';
 
@@ -15,10 +14,7 @@ Future<void> main() async {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(
-        create: (context) => AuthenticateCubit(authenticateUsecase: sl()),
-      ),
-      BlocProvider(
-        create: (context) => UserCubit(),
+        create: (context) => AuthenticateCubit(sl(), sl(), sl(), sl()),
       ),
     ],
     child: const MainApp(),

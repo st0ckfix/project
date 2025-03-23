@@ -1,28 +1,24 @@
 part of 'weather_cubit.dart';
 
-abstract class WeatherCubitState extends Equatable {
-  const WeatherCubitState();
+abstract class WeatherState {}
 
-  @override
-  List<Object> get props => [];
+class WeatherInitialState extends WeatherState {}
+
+class WeatherLoadingState extends WeatherState {}
+
+class WeatherHistoryLoadingState extends WeatherState {}
+
+class WeatherLoadedState extends WeatherState {
+  final List<WeatherModel> weatherData;
+  WeatherLoadedState(this.weatherData);
 }
 
-final class WeatherCubitInitial extends WeatherCubitState {}
-
-final class WeatherCubitLoading extends WeatherCubitState {}
-
-final class WeatherCubitLoaded extends WeatherCubitState {
-  const WeatherCubitLoaded(this.weatherList);
-  final List<WeatherModel> weatherList;
-
-  @override
-  List<Object> get props => [weatherList];
+class WeatherHistoryLoadedState extends WeatherState {
+  final List<HistoryModel> historyData;
+  WeatherHistoryLoadedState(this.historyData);
 }
 
-final class WeatherCubitError extends WeatherCubitState {
-  const WeatherCubitError(this.error);
-  final DioException error;
-
-  @override
-  List<Object> get props => [error];
+class WeatherErrorState extends WeatherState {
+  final String message;
+  WeatherErrorState(this.message);
 }

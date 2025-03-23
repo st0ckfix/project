@@ -1,28 +1,18 @@
 part of 'authenticate_cubit.dart';
 
-abstract class AuthenticateCubitState extends Equatable {
-  const AuthenticateCubitState();
+abstract class AuthenticateState {}
 
-  @override
-  List<Object> get props => [];
-}
+class AuthenticateInitialState extends AuthenticateState {}
 
-final class AuthenticateCubitInitial extends AuthenticateCubitState {}
+class AuthenticateLoadingState extends AuthenticateState {}
 
-final class AuthenticateCubitLoading extends AuthenticateCubitState {}
+class AuthenticateSuccessState extends AuthenticateState {}
 
-final class AuthenticateCubitLoaded extends AuthenticateCubitState {
-  const AuthenticateCubitLoaded(this.userModel);
-  final UserModel userModel;
+class AuthenticateRegisterSuccessState extends AuthenticateState {}
 
-  @override
-  List<Object> get props => [userModel];
-}
+class AuthenticateLogoutState extends AuthenticateState {}
 
-final class AuthenticateCubitError extends AuthenticateCubitState {
-  const AuthenticateCubitError(this.error);
-  final DioException error;
-
-  @override
-  List<Object> get props => [error];
+class AuthenticateErrorState extends AuthenticateState {
+  final String message;
+  AuthenticateErrorState(this.message);
 }

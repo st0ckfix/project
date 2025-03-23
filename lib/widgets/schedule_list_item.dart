@@ -1,11 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:project/model/schedule.dart';
 
 class ScheduleListItem extends StatefulWidget {
   final ScheduleModel schedule;
-  final Future<TimeOfDay?> Function() onTap;
+  final Function onTap;
 
   const ScheduleListItem({
     super.key,
@@ -18,32 +16,25 @@ class ScheduleListItem extends StatefulWidget {
 }
 
 class _ScheduleListItemState extends State<ScheduleListItem> {
-  late bool isDone;
+  late bool isRepeat;
   late ScheduleModel schedule;
 
   @override
   void initState() {
     super.initState();
     schedule = widget.schedule;
-    isDone = widget.schedule.isDone;
+    isRepeat = schedule.isRepeat;
   }
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () async {
-        final newValue = await widget.onTap();
-        log('New value: $newValue');
-        if (newValue != null) {
-          setState(() {
-            schedule = schedule.copyWith(
-              timeOfDay: newValue,
-            );
-          });
-        }
-      },
+      onTap: () => widget.onTap(),
       title: Text(
-        schedule.timeOfDay.format(context).replaceFirst('AM', '').replaceFirst('PM', ''),
+        schedule.timeOfDay
+            .format(context)
+            .replaceFirst('AM', '')
+            .replaceFirst('PM', ''),
         style: TextStyle(fontSize: 48),
       ),
       subtitle: Text(
@@ -53,10 +44,10 @@ class _ScheduleListItemState extends State<ScheduleListItem> {
       trailing: Transform.scale(
         scale: 1.5,
         child: Switch(
-          value: isDone,
+          value: isRepeat,
           onChanged: (boolean) {
             setState(() {
-              isDone = boolean;
+              isRepeat = boolean;
             });
           },
         ),

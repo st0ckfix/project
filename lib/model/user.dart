@@ -1,19 +1,36 @@
 class UserModel {
   final String id;
   final String avatar;
-  final String name;
+  final String firstName;
+  final String lastName;
 
   UserModel({
     required this.id,
     required this.avatar,
-    required this.name,
+    required this.firstName,
+    required this.lastName,
   });
+
+  UserModel copyWith({
+    String? id,
+    String? avatar,
+    String? firstName,
+    String? lastName,
+  }) {
+    return UserModel(
+      id: id ?? this.id,
+      avatar: avatar ?? this.avatar,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'avatar': avatar,
-      'name': name,
+      'first_name': firstName,
+      'last_name': lastName,
     };
   }
 
@@ -21,7 +38,8 @@ class UserModel {
     return UserModel(
       id: json['id'],
       avatar: json['avatar'],
-      name: json['name'],
+      firstName: json['first_name'],
+      lastName: json['last_name'],
     );
   }
 
@@ -29,7 +47,8 @@ class UserModel {
     return UserModel(
       id: '',
       avatar: '',
-      name: '',
+      firstName: '',
+      lastName: '',
     );
   }
 }

@@ -1,0 +1,11 @@
+{
+    "editor.wordWrap": "off",
+    "editor.rulers": [
+        2000
+    ],
+    "editor.wordWrapColumn": 3000,
+    "[dart]": {
+        "editor.defaultFormatter": null
+    },
+    "dart.lineLength": 200
+}

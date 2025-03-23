@@ -1,23 +1,16 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:project/widgets/schedule_repeat_list_item.dart';
 
 class RepeatSchedulePage extends StatefulWidget {
-  const RepeatSchedulePage({super.key});
+  const RepeatSchedulePage({super.key, required this.repeatList});
+
+  final List<bool> repeatList;
 
   @override
   State<RepeatSchedulePage> createState() => _RepeatSchedulePageState();
 }
 
 class _RepeatSchedulePageState extends State<RepeatSchedulePage> {
-  late List<bool> _config;
-
-  @override
-  void initState() {
-    super.initState();
-    _config = List.generate(7, (index) => Random().nextBool());
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +30,7 @@ class _RepeatSchedulePageState extends State<RepeatSchedulePage> {
           itemBuilder: (context, index) {
             return RepeatScheduleListItem(
               title: 'Mọi ${index == 6 ? 'Chủ Nhật' : 'Thứ ${index + 2}'}',
-              isSelected: _config[index],
+              isSelected: widget.repeatList[index],
             );
           },
           separatorBuilder: (context, index) {

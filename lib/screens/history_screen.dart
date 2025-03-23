@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project/bloc/history/history_cubit.dart';
+import 'package:project/bloc/weather/weather_cubit.dart';
 import 'package:project/model/history.dart';
 import 'package:project/widgets/history_weather_detail.dart';
 import 'package:shimmer/shimmer.dart';
@@ -32,9 +32,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Column(
-              children: history.weathers
-                  .map((weather) => HistoryWeatherDetail(weather: weather))
-                  .toList(),
+              children: history.weathers.map((weather) => HistoryWeatherDetail(weather: weather)).toList(),
             ),
           ),
         );
@@ -96,21 +94,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      BlocProvider.of<HistoryCubit>(context).getHistoryData();
+      BlocProvider.of<WeatherCubit>(context).getWeatherHistory();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HistoryCubit, HistoryCubitState>(
+    return BlocBuilder<WeatherCubit, WeatherState>(
       builder: (context, state) {
-        if (state is HistoryCubitLoaded) {
+        if (state is WeatherHistoryLoadedState) {
           return AnimatedSwitcher(
             duration: Duration(milliseconds: 500),
-            child: _buildDataWidget(state.historyList),
+            child: _buildDataWidget(state.historyData),
           );
-        } else if (state is HistoryCubitError) {
-          return _buildError(state.error.message ?? "Có lỗi xảy ra");
+        } else if (state is WeatherErrorState) {
+          return _buildError(state.message);
         } else {
           return _buildShimmer();
         }

@@ -16,14 +16,16 @@ class ChangeSchedulePage extends StatefulWidget {
 class _ChangeSchedulePageState extends State<ChangeSchedulePage> {
   late WheelPickerController _hourController;
   late WheelPickerController _minuteController;
-  late bool isRepeat;
+  late bool isSnooze;
 
   @override
   void initState() {
     super.initState();
-    _hourController = WheelPickerController(itemCount: 23, initialIndex: widget.scheduleModel.timeOfDay.hour - 1);
-    _minuteController = WheelPickerController(itemCount: 59, initialIndex: widget.scheduleModel.timeOfDay.minute - 1);
-    isRepeat = widget.scheduleModel.isRepat;
+    _hourController = WheelPickerController(
+        itemCount: 23, initialIndex: widget.scheduleModel.timeOfDay.hour - 1);
+    _minuteController = WheelPickerController(
+        itemCount: 59, initialIndex: widget.scheduleModel.timeOfDay.minute - 1);
+    isSnooze = widget.scheduleModel.isSnooze;
   }
 
   @override
@@ -47,11 +49,20 @@ class _ChangeSchedulePageState extends State<ChangeSchedulePage> {
         actions: [
           IconButton(
             onPressed: () {
-              if (widget.scheduleModel.timeOfDay.hour == _hourController.selected && widget.scheduleModel.timeOfDay.minute == _minuteController.selected) {
+              if (widget.scheduleModel.timeOfDay.hour ==
+                      _hourController.selected &&
+                  widget.scheduleModel.timeOfDay.minute ==
+                      _minuteController.selected) {
                 Navigator.pop(context);
               } else {
-                TimeOfDay(hour: _hourController.selected, minute: _minuteController.selected);
-                Navigator.pop(context, TimeOfDay(hour: _hourController.selected + 1, minute: _minuteController.selected + 1));
+                TimeOfDay(
+                    hour: _hourController.selected,
+                    minute: _minuteController.selected);
+                Navigator.pop(
+                    context,
+                    TimeOfDay(
+                        hour: _hourController.selected + 1,
+                        minute: _minuteController.selected + 1));
               }
             },
             icon: Text(
@@ -64,114 +75,114 @@ class _ChangeSchedulePageState extends State<ChangeSchedulePage> {
           ),
         ],
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+      body: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 250,
+                width: 30,
+                child: WheelPicker(
+                  controller: _hourController,
+                  builder: (context, index) => Text(
+                    (index < 9 ? '0' : '') + (index + 1).toString(),
+                    style: TextStyle(fontSize: 22),
+                  ),
+                  selectedIndexColor: Color(0xFF1E90FF),
+                  looping: true,
+                  style: WheelPickerStyle(itemExtent: 25),
+                ),
+              ),
+              const SizedBox(width: 20),
+              SizedBox(
+                height: 250,
+                width: 30,
+                child: WheelPicker(
+                  controller: _minuteController,
+                  builder: (context, index) => Text(
+                    (index < 9 ? '0' : '') + (index + 1).toString(),
+                    style: TextStyle(fontSize: 22),
+                  ),
+                  selectedIndexColor: Color(0xFF1E90FF),
+                  looping: true,
+                  style: WheelPickerStyle(itemExtent: 25),
+                ),
+              )
+            ],
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
               children: [
-                SizedBox(
-                  height: 250,
-                  width: 30,
-                  child: WheelPicker(
-                    controller: _hourController,
-                    builder: (context, index) => Text(
-                      (index < 9 ? '0' : '') + (index + 1).toString(),
-                      style: TextStyle(fontSize: 22),
+                ScheduleOptionRow(
+                  title: 'Lặp lại',
+                  value: 'Hàng ngày',
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RepeatSchedulePage(
+                        repeatList: widget.scheduleModel.repeatList,
+                      ),
                     ),
-                    selectedIndexColor: Color(0xFF1E90FF),
-                    looping: true,
-                    style: WheelPickerStyle(itemExtent: 25),
                   ),
                 ),
-                const SizedBox(width: 20),
-                SizedBox(
-                  height: 250,
-                  width: 30,
-                  child: WheelPicker(
-                    controller: _minuteController,
-                    builder: (context, index) => Text(
-                      (index < 9 ? '0' : '') + (index + 1).toString(),
-                      style: TextStyle(fontSize: 22),
+                Divider(),
+                ScheduleOptionRow(
+                  title: 'Nhãn',
+                  value: widget.scheduleModel.description,
+                  onTap: () {},
+                ),
+                Divider(),
+                ScheduleOptionRow(
+                  title: 'Âm thanh',
+                  value: 'Hướng tâm',
+                  onTap: () {},
+                ),
+                Divider(),
+                Row(
+                  children: [
+                    Text(
+                      'Báo lại',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    selectedIndexColor: Color(0xFF1E90FF),
-                    looping: true,
-                    style: WheelPickerStyle(itemExtent: 25),
-                  ),
-                )
+                    Spacer(),
+                    StatefulBuilder(builder: (context, setStateBuilder) {
+                      return Switch(
+                        value: isSnooze,
+                        onChanged: (change) {
+                          setStateBuilder(() {
+                            isSnooze = change;
+                          });
+                        },
+                      );
+                    }),
+                  ],
+                ),
               ],
             ),
-            Container(
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                children: [
-                  ScheduleOptionRow(
-                    title: 'Lặp lại',
-                    value: 'Hàng ngày',
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RepeatSchedulePage(),
-                      ),
-                    ),
-                  ),
-                  Divider(),
-                  ScheduleOptionRow(
-                    title: 'Nhãn',
-                    value: widget.scheduleModel.description,
-                    onTap: () {},
-                  ),
-                  Divider(),
-                  ScheduleOptionRow(
-                    title: 'Âm thanh',
-                    value: 'Hướng tâm',
-                    onTap: () {},
-                  ),
-                  Divider(),
-                  Row(
-                    children: [
-                      Text(
-                        'Báo lại',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Spacer(),
-                      StatefulBuilder(builder: (context, setStateBuilder) {
-                        return Switch(
-                          value: isRepeat,
-                          onChanged: (change) {
-                            setStateBuilder(() {
-                              isRepeat = change;
-                            });
-                          },
-                        );
-                      }),
-                    ],
-                  ),
-                ],
+          ),
+          Container(
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+              child: Text(
+                'Xóa',
+                style: TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),
-            Container(
-              width: double.infinity,
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                child: Text(
-                  'Xóa',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

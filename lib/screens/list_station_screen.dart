@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project/bloc/device_list/device_list_cubit.dart';
+import 'package:project/bloc/device_list/device_cubit.dart';
 import 'package:project/model/device.dart';
+import 'package:project/model/weather.dart';
 import 'package:project/pages/device_page.dart';
 import 'package:project/widgets/device_info_card.dart';
 import 'package:shimmer/shimmer.dart';
@@ -20,13 +21,14 @@ class _ListStationScreenState extends State<ListStationScreen> {
     );
   }
 
-  Widget _buildDataWidget(List<DeviceModel> list) {
+  Widget _buildDataWidget(List<DeviceModel> list, List<WeatherModel> weathers) {
     return Container(
       color: Color(0xFF1387DA).withValues(alpha: .1),
       child: ListView.builder(
         itemCount: list.length,
         itemBuilder: (context, index) {
           final device = list[index];
+          final weather = weathers[index];
           return InkWell(
             onTap: () {
               Navigator.push(
@@ -51,7 +53,7 @@ class _ListStationScreenState extends State<ListStationScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
-                      device.name,
+                      device.deviceName,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -64,14 +66,13 @@ class _ListStationScreenState extends State<ListStationScreen> {
                       DeviceInfoCard(
                         imagePath: 'assets/temperature.png',
                         label: 'Temperature',
-                        value:
-                            '${device.weather.temperature.toStringAsFixed(0)}°C',
+                        value: '${weather.temperature.toStringAsFixed(0)}°C',
                         status: 'Normal',
                       ),
                       DeviceInfoCard(
                         imagePath: 'assets/humidity.png',
                         label: 'Humidity',
-                        value: '${device.weather.humidity}%',
+                        value: '${weather.humidity}%',
                         status: 'Normal',
                       ),
                     ],
@@ -81,13 +82,13 @@ class _ListStationScreenState extends State<ListStationScreen> {
                       DeviceInfoCard(
                         imagePath: 'assets/moisture.png',
                         label: 'Moisture',
-                        value: '${device.weather.moisture}%',
+                        value: '${weather.moisture}%',
                         status: 'Normal',
                       ),
                       DeviceInfoCard(
                         imagePath: 'assets/light.png',
                         label: 'Light',
-                        value: '${device.weather.light}lux',
+                        value: '${weather.light}lux',
                         status: 'Normal',
                       ),
                     ],
@@ -156,22 +157,21 @@ class _ListStationScreenState extends State<ListStationScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      BlocProvider.of<DeviceListCubit>(context).getDeviceData();
+      BlocProvider.of<DeviceCubit>(context).getDevices();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DeviceListCubit, DeviceListCubitState>(
+    return BlocBuilder<DeviceCubit, DeviceState>(
       builder: (context, state) {
-        if (state is DeviceListCubitLoaded) {
+        if (state is DeviceLoadedState) {
           return AnimatedSwitcher(
             duration: Duration(milliseconds: 500),
-            child: _buildDataWidget(state.deviceList),
+            child: _buildDataWidget(state.devices, state.weathers),
           );
-        } else if (state is DeviceListCubitError) {
-          return _buildError(
-              state.error.message ?? "Có lỗi xảy ra, vui lòng thử lại sau");
+        } else if (state is DeviceErrorState) {
+          return _buildError(state.message);
         } else {
           return _buildShimmer();
         }

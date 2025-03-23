@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _index = 3;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      BlocProvider.of<WeatherCubit>(context).getWeatherData();
+      BlocProvider.of<WeatherCubit>(context).getWeather();
     });
   }
 
@@ -112,15 +112,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WeatherCubit, WeatherCubitState>(
+    return BlocBuilder<WeatherCubit, WeatherState>(
       builder: (context, state) {
-        if (state is WeatherCubitLoaded) {
+        if (state is WeatherLoadedState) {
           return AnimatedSwitcher(
             duration: Duration(milliseconds: 500),
-            child: _buildDataWidget(state.weatherList),
+            child: _buildDataWidget(state.weatherData),
           );
-        } else if (state is WeatherCubitError) {
-          return _buildError(state.error.message ?? "Có lỗi xảy ra");
+        } else if (state is WeatherErrorState) {
+          return _buildError(state.message);
         } else {
           return _buildShimmer();
         }

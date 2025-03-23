@@ -1,7 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:project/model/weather.dart';
+import 'package:project/repository/base_repository.dart';
 
-abstract class WeatherRepository {
-  Future<Either<DioException, List<WeatherModel>>> getWeatherData();
+abstract class WeatherRepository extends BaseRepository {
+  WeatherRepository(super.apiService);
+  Future<Either<DioException, Response>> getHistory();
+
+  Future<Either<DioException, Response>> getWeather();
 }
